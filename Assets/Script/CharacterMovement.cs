@@ -21,8 +21,17 @@ public class CharacterMovement : MonoBehaviour
 
     void MovePlayer()
     {
-        
-        if(_gravityState.CurrentState == GravityState.Up || _gravityState.CurrentState == GravityState.Down)
+
+        if (_gravityState.CurrentState == GravityState.Up)
+        {
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
+
+            Vector3 movement = new Vector3(moveHorizontal, 0, -moveVertical) * moveSpeed;
+            rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+        }
+
+        else if (_gravityState.CurrentState == GravityState.Down)
         {
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
@@ -31,7 +40,7 @@ public class CharacterMovement : MonoBehaviour
             rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
         }
 
-        else if(_gravityState.CurrentState == GravityState.Left || _gravityState.CurrentState == GravityState.Right)
+        else if (_gravityState.CurrentState == GravityState.Right)
         {
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
@@ -40,6 +49,15 @@ public class CharacterMovement : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, movement.y, movement.z);
         }
 
-        
+        else if (_gravityState.CurrentState == GravityState.Left)
+        {
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
+
+            Vector3 movement = new Vector3(0, -moveHorizontal, moveVertical) * moveSpeed;
+            rb.velocity = new Vector3(rb.velocity.x, movement.y, movement.z);
+        }
+
+
     }
 }
