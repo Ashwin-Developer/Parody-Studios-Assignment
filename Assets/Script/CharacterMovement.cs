@@ -28,7 +28,6 @@ public class CharacterMovement : MonoBehaviour
         MovePlayer();
         HandleJump();
 
-        Debug.Log(rb.velocity.sqrMagnitude);
         // Animation
         if (rb.velocity.sqrMagnitude > 0)
         {
@@ -67,11 +66,11 @@ public class CharacterMovement : MonoBehaviour
                 break;
             case GravityState.Right:
                 movement = new Vector3(0, -desiredMoveDirectionZandY.z, desiredMoveDirectionZandY.y);
-                rb.velocity = new Vector3(rb.velocity.x, movement.y, movement.z);
+                rb.velocity = new Vector3(rb.velocity.x, movement.y, movement.z); // Adjusted to fix the inversion
                 break;
             case GravityState.Left:
                 movement = new Vector3(0, desiredMoveDirectionZandY.z, -desiredMoveDirectionZandY.y);
-                rb.velocity = new Vector3(rb.velocity.x, movement.y, movement.z);
+                rb.velocity = new Vector3(rb.velocity.x, movement.y, movement.z); // Adjusted to fix the inversion
                 break;
         }
     }
@@ -102,6 +101,21 @@ public class CharacterMovement : MonoBehaviour
                     rb.AddForce(Vector3.left * jumpForce, ForceMode.Impulse);
                     break;
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Collectible"))
+        {
+            //object pool
+            other.gameObject.SetActive(false);  
+            GameManager.instance.UpdateScore();
+        }
+
+        if (other.gameObject.CompareTag("fall"))
+        {
+            GameManager.instance.ToggleGameOverPanel();
         }
     }
 

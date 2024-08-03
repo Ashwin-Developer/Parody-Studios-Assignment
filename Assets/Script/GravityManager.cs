@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//State Pattern
 public enum GravityState
 {
     Up,
