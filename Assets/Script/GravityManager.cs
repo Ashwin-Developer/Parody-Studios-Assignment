@@ -23,27 +23,25 @@ public class GravityManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
-
         else
         {
             Destroy(this.gameObject);
         }
     }
+
     void Update()
     {
         if (Input.GetButtonDown("Gravity Left"))
         {
             ChangeGravity(_gravityLeftVector, "Left arrow clicked", new Vector3(0, 0, -90), GravityState.Left);
-
         }
         else if (Input.GetButtonDown("Gravity Right"))
         {
             ChangeGravity(_gravityRightVector, "Right arrow clicked", new Vector3(0, 0, 90), GravityState.Right);
-
         }
         else if (Input.GetButtonDown("Gravity Up"))
         {
@@ -51,16 +49,16 @@ public class GravityManager : MonoBehaviour
         }
         else if (Input.GetButtonDown("Gravity Down"))
         {
-            ChangeGravity(_gravityDownVector, "Down arrow clicked", new Vector3(0, 0, 0), GravityState.Down);
+            ChangeGravity(_gravityDownVector, "Down arrow clicked", Vector3.zero, GravityState.Down);
         }
     }
 
-    private void ChangeGravity(Vector3 gravityVector, string message, Vector3 position, GravityState state)
+    private void ChangeGravity(Vector3 gravityVector, string message, Vector3 rotation, GravityState state)
     {
         Physics.gravity = gravityVector;
         Debug.Log(message);
-        _player.rotation = Quaternion.Euler(position);
-        CurrentState = state; 
+        _player.rotation = Quaternion.Euler(rotation);
+        CurrentState = state;
     }
 
 }

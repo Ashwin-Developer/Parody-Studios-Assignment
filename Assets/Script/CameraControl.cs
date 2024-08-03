@@ -10,10 +10,12 @@ public class CameraControl : MonoBehaviour
 
     [SerializeField] private float xRotation = 0f;
     [SerializeField] private float yRotation = 0f;
+    private GravityManager _gravityManager;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        _gravityManager = GravityManager.instance;
     }
 
     void Update()
@@ -29,11 +31,24 @@ public class CameraControl : MonoBehaviour
         xRotation -= mouseY;
         yRotation += mouseX;
 
-        playerBody.localRotation = Quaternion.Euler(0f, yRotation, 0f);
+        Quaternion gravityRotation = Quaternion.identity;
 
-        // Update camera position and rotation
-        Vector3 desiredPosition = playerBody.position - playerBody.forward * distanceFromPlayer;
-        transform.position = desiredPosition;
-        transform.LookAt(playerBody); 
+        switch (_gravityManager.CurrentState)
+        {
+            case GravityState.Up:
+                gravityRotation = Quaternion.Euler(0f, 0f, 180f);
+                break;
+            case GravityState.Down:
+                gravityRotation = Quaternion.Euler(0f, 0f, 0f);
+                break;
+            case GravityState.Left:
+                gravityRotation = Quaternion.Euler(0f, 0f, -90f);
+                break;
+            case GravityState.Right:
+                gravityRotation = Quaternion.Euler(0f, 0f, 90f);
+                break;
+        }
+
+        playerBody.rotation = gravityRotation * Quaternion.Euler(0f, yRotation, 0f);
     }
 }
